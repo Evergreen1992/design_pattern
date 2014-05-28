@@ -1,0 +1,31 @@
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : 222.18.159.6
+Source Server Version : 50166
+Source Host           : 222.18.159.6:3306
+Source Database       : appTest
+
+Target Server Type    : MYSQL
+Target Server Version : 50166
+File Encoding         : 65001
+
+Date: 2014-04-16 22:04:58
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for `historyScore`
+-- ----------------------------
+DROP TABLE IF EXISTS `historyScore`;
+CREATE TABLE `historyScore` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `history_high` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of historyScore
+-- ----------------------------
+INSERT INTO `historyScore` VALUES ('1', '0');
