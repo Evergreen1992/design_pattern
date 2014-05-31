@@ -21,6 +21,7 @@ import com.tankwar.utils.SoundPlayFactory;
 /**
  * main frame interface
  * @author Evergreen
+ * date 2014-5-31
  *
  */
 public class MainFrame extends JFrame implements KeyListener, MouseListener, Runnable , MouseInputListener{
