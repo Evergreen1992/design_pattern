@@ -9,6 +9,7 @@ import com.tankwar.utils.Constant;
 /**
  * 道具管理器
  * @author Evergreen
+ * 
  *
  */
 public class PropsContainer {
