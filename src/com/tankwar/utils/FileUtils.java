@@ -33,7 +33,10 @@ public class FileUtils {
 			out = new FileWriter(current);
 			for(int i = 0; i<array.length; i++){
 				for(int j = 0; j<array[i].length; j ++){
-					out.write(array[i][j] + "");
+					if( i <= 2)
+						out.write(0 + "");
+					else
+						out.write(array[i][j] + "");
 				}
 				if( i != array[i].length - 1)
 					out.write("\n");
