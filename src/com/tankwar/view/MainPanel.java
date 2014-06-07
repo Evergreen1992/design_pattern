@@ -114,13 +114,22 @@ public class MainPanel extends JPanel{
 			g.setColor(Color.WHITE);
 			g.fillRect(0, 0, this.mainFrame.width, this.mainFrame.height);
 			
+			
 			//背景颜色
 			g.setColor(bgColor);
 			g.fillRect(0, 0, 900, 600);
 			
+			g.setColor(Color.white);
+			g.setFont(this.defaultFontBig);
+			g.drawString("Tank War 2014", 380, 100);
+			
+			
 			//默认字体设置
 			g.setColor(Color.black);
 			g.setFont(defaultFontBig);//设置字体
+			
+			
+			
 			//菜单项目绘制
 			for( int i = 0; i<this.menuStr.length; i++){
 				if( i == currentOption){//当前选中的菜单项目
@@ -312,21 +321,6 @@ public class MainPanel extends JPanel{
 			g.drawImage(enemy1Right, enemy.getLocation_x(), enemy.getLocation_y(), enemy.getHeight(), enemy.getWidth(), this);
 		}
 	}
-	
-	/**
-	 * draw game panel on the right
-	 *//*
-	public void drawGamePanel(Graphics g){
-		g.setColor(Color.black);
-		g.fillRect(805, 0, 100, Constant.active_area_y);
-		g.setColor(Color.red);
-		g.drawString("第" + Game.stage + "关", 830, 100);
-		g.drawString("ESC:退出游戏", 810, 130);
-		g.drawString("消灭坦克:" + Game.enemy_killed, 810, 150);
-		g.drawString("剩余坦克:" + (Constant.defaultEnemiesNum - Game.enemy_killed), 810, 170);
-		g.drawString("得分:" + Game.enemy_killed * Constant.singleScore, 810, 190);
-		g.drawString("历史最高:" + "" , 810, 210);//DBHandler.getHistoryHigh()
-	}*/
 	
 	public void setGameOption(int token){
 		if( token == 0){
