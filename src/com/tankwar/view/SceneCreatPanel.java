@@ -28,6 +28,10 @@ public class SceneCreatPanel extends JPanel{
 	private int current_type = 0 ; //当前地图元素类型
 	public Image wall, grass, wallUndefeted, water = null , saveBtnImg = null, bgImage = null ;
 	
+	private int model = 0 ; //操作方式(0:鼠标模式  1:键盘模式)
+	private int blockType = 0 ; //方块类型
+	
+	
 	//设置地图属性值
 	public void setMapValue(){
 		if( pointer_x >=0 && pointer_x < Constant.MAP_Array_SIZE && pointer_y < 80 && pointer_y >=0)
@@ -57,7 +61,56 @@ public class SceneCreatPanel extends JPanel{
 		
 		g.setColor(Color.green);
 		g.drawLine(50, 50 + 5 * 10, 850, 50 + 5 * 10);
+		drawButtons(g);
+	}
+	
+	/**
+	 * 绘制按钮
+	 * @param g
+	 */
+	public void drawButtons(Graphics g){
+		g.setColor(Color.green);
+		g.fill3DRect(50, 555, 100, 40, this.model == 0 ? true : false);
+		g.fill3DRect(160, 555, 100, 40, this.model == 1 ? true : false);
+		g.fillRect(270, 555, 100, 40);
+		//清除
+		g.setColor(Color.red);
+		g.fillRect(380, 555, 100, 40);
 		
+		g.drawImage(this.grass, 500, 555, 40, 40, this);
+		g.drawImage(this.wall, 550, 555, 40, 40, this);
+		g.drawImage(this.wallUndefeted, 600, 555, 40, 40, this);
+		g.drawImage(this.water, 650, 555, 40, 40, this);
+		g.setColor(Color.white);
+		g.drawRect(700, 555, 40, 40);
+		
+		g.setColor(Color.white);
+		g.drawString("鼠标模式", 75, 575);
+		g.drawString("键盘模式", 185, 575);
+		g.drawString("保存", 295, 575);
+		g.drawString("清除", 395, 575);
+		
+		g.setColor(Color.red);
+
+		//左边按钮状态
+		if( this.model == 0 ){
+			g.drawRect(50, 555, 100, 40);
+		}else{
+			g.drawRect(160, 555, 100, 40);
+		}
+		
+		//右边图形方块选中状态
+		if( this.blockType == 0 ){
+			g.drawRect(500, 555, 40, 40);
+		}else if( this.blockType == 1){
+			g.drawRect(550, 555, 40, 40);
+		}else if( this.blockType == 2){
+			g.drawRect(600, 555, 40, 40);
+		}else if( this.blockType == 3){
+			g.drawRect(650, 555, 40, 40);
+		}else if( this.blockType == 4){
+			g.drawRect(700, 555, 40, 40);
+		}
 	}
 	
 	public void drawMap(Graphics g){
@@ -126,6 +179,44 @@ public class SceneCreatPanel extends JPanel{
 		g.drawRect(pointer_y * 10 + 50, pointer_x * 10 + 50, 10, 10);
 	}
 	
+	/**
+	 * 设置类型
+	 */
+	public void setBlockType(int i, int j){
+		if( i >= 0 && i < Constant.MAP_Array_SIZE && j >= 0 && j < 80){
+			if( this.blockType == 0 ){
+				this.array[i][j] = 1;
+			}else if( this.blockType == 1){
+				this.array[i][j] = 2;
+			}else if( this.blockType == 2){
+				this.array[i][j] = 3;
+			}else if( this.blockType == 3){
+				this.array[i][j] = 4;
+			}else if( this.blockType == 4){
+				this.array[i][j] = 0;
+			}
+		}
+		
+	}
+	/**
+	 * 批量设置类型
+	 * @return
+	 */
+	public void batchHandle(int x1, int y1, int x2, int y2){
+		int startX = (x1 <= x2 ? x1 : x2) ;
+		int endX = x1 + x2 - startX ;
+		int startY = (y1 <= y2 ? y1 : y2 ); 
+		int endY = y1 + y2 - startY ; 
+		
+		int startI = (startY - 50) / 10 ;
+		int startJ = (startX - 50 ) / 10 ;
+		
+		for( int i = startI ; i <= startI + (endY - startY)/10; i ++){
+			for( int j = startJ; j < startJ + ( endX - startX ) / 10; j ++){
+				setBlockType(i, j);
+			}
+		}
+	}
 	
 	public int getPointer_x() {
 		return pointer_x;
@@ -156,5 +247,21 @@ public class SceneCreatPanel extends JPanel{
 
 	public void setArray(int[][] array) {
 		this.array = array;
+	}
+	
+	public int getModel(){
+		return this.model;
+	}
+	
+	public void setModel(int model){
+		this.model = model ;
+	}
+	
+	public int getBlockType() {
+		return blockType;
+	}
+
+	public void setBlockType(int blockType) {
+		this.blockType = blockType;
 	}
 }

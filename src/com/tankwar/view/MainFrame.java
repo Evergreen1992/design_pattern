@@ -319,21 +319,40 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 	
 	//mouse event
 	public void mouseClicked(MouseEvent e) {
-		System.out.println(e.getX() + "," + e.getY());
-
-		/*//主界面
-		if( Game.PANEL_STATUS == Game.PANEL_STATUS_MAINPANEL){
-			if( e.getX() >= 300 && e.getX() <= 500 && e.getY() >= 230 && e.getY() <= 260){
-				gameStart();
-			}else if(e.getX() >= 300 && e.getX() <= 500 && e.getY() >= 280 && e.getY() <= 320){
-				
-			}else if(e.getX() >= 300 && e.getX() <= 500 && e.getY() >= 350 && e.getY() <= 380){
-				//游戏恢复
-				gameResume();
-			}
-		}else if( Game.PANEL_STATUS == Game.PANEL_STATUS_SCENE_CHOSE){//游戏场景选择面板
+		
+		//主界面
+		if( Game.PANEL_STATUS == Game.PANEL_STATUS_SCENE_BUILD){
 			
-		}*/
+			//菜单选项
+			if( e.getX() >= 50 && e.getX() <= 150 && e.getY() >= 555 && e.getY() <= 595){
+				this.scenePanel.setModel(0);
+			}else if(e.getX() >= 160 && e.getX() <= 260 && e.getY() >= 555 && e.getY() <= 595){
+				this.scenePanel.setModel(1);
+			}else if(e.getX() >= 270 && e.getX() <= 370 && e.getY() >= 555 && e.getY() <= 595){
+				System.out.println("3");
+			}else if(e.getX() >= 380 && e.getX() <= 480 && e.getY() >= 555 && e.getY() <= 595){
+				System.out.println("4");
+			}else if(e.getX() >= 500 && e.getX() <= 540 && e.getY() >= 555 && e.getY() <= 595){
+				this.scenePanel.setBlockType(0);
+			}else if(e.getX() >= 550 && e.getX() <= 590 && e.getY() >= 555 && e.getY() <= 595){
+				this.scenePanel.setBlockType(1);
+			}else if(e.getX() >= 600 && e.getX() <= 640 && e.getY() >= 555 && e.getY() <= 595){
+				this.scenePanel.setBlockType(2);
+			}else if(e.getX() >= 650 && e.getX() <= 690 && e.getY() >= 555 && e.getY() <= 595){
+				this.scenePanel.setBlockType(3);
+			}else if(e.getX() >= 700 && e.getX() <= 740 && e.getY() >= 555 && e.getY() <= 595){
+				this.scenePanel.setBlockType(4);
+			}
+			
+			
+			//鼠标模式
+			if( this.scenePanel.getModel() == 0  ){
+				//判断
+				if( (e.getY() - 50)/10 >= 0 && (e.getY() - 50)/10 < Constant.MAP_Array_SIZE && (e.getX() - 50)/10 >= 0 && (e.getX() - 50)/10 <= 79){
+					this.scenePanel.setBlockType((e.getY() - 50)/10 , (e.getX() - 50)/10 );
+				}
+			}
+		}
 	}
 
 	public void mousePressed(MouseEvent e) {
@@ -355,7 +374,15 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 	
 	public void mouseDragged(MouseEvent e) {
 		Point p = this.getLocation();
-		setLocation(p.x + e.getX() - this.pointer_x, p.y + e.getY()- this.pointer_y);
+		if( Game.PANEL_STATUS != Game.PANEL_STATUS_SCENE_BUILD ){
+			setLocation(p.x + e.getX() - this.pointer_x, p.y + e.getY()- this.pointer_y);
+		}
+		else{
+			if( this.scenePanel.getModel() == 0)
+			{
+				this.scenePanel.batchHandle(this.pointer_x, this.pointer_y , e.getX(), e.getY());
+			}
+		}
 	}
 
 	public void mouseMoved(MouseEvent e) {

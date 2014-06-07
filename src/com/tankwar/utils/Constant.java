@@ -32,7 +32,7 @@ public class Constant {
 	/*
 	 * default enemy number
 	 */
-	public static final int defaultEnemiesNum = 5 ;
+	public static final int defaultEnemiesNum = 1 ;
 	
 	/*
 	 * rectangle(the walls') width and height

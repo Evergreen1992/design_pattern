@@ -63,7 +63,7 @@ public class StageChosePanel extends JPanel{
 		g.setColor(Color.blue);
 		g.drawString("选择关卡", 400, 30);
 		
-		/*for( int i = 0 ; i<((stageNum%5 == 0)?(stageNum/5):(stageNum/5 + 1)); i ++){
+		for( int i = 0 ; i<((stageNum%5 == 0)?(stageNum/5):(stageNum/5 + 1)); i ++){
 			for( int j = 0 ; j <5; j++){
 				if( i * 5 + j + 1 <= stageNum){
 					g.setColor(Color.blue);
@@ -79,19 +79,28 @@ public class StageChosePanel extends JPanel{
 					
 				}
 			}
-		}*/
+		}
 		
 		
 		//绘制滑动面板
-		for( int i = 0; i<stageNum; i++){
+		/*for( int i = 0; i<stageNum; i++){
 			g.setColor(this.colorList[i % this.colorList.length]);
 			g.fillRect(50 + i * 40 , 50 + i * 40, 500, 300);
 			if( i == stageNum - 1){
 				g.setColor(Color.black);
 				g.drawRect(50 + i * 40 , 50 + i * 40, 500, 300);
 			}
-		}
+		}*/
 		drawScene(g);
+		
+		drawButtons(g);
+	}
+	
+	/**
+	 * 绘制按钮
+	 */
+	public void drawButtons(Graphics g){
+		
 	}
 	
 	/**
@@ -99,25 +108,25 @@ public class StageChosePanel extends JPanel{
 	 * @param g
 	 */
 	public void drawScene(Graphics g){
-		int startPosition = 50 + (this.stageNum - 1) * 40 ;
+		int startPosition = 100 + (this.stageNum - 1) * 40 ;
 		//50 + i * 40 , 50 + i * 40
 		g.setColor(Color.black);
-		g.fillRect(50 + (this.stageNum - 1) * 40, 50 + (this.stageNum - 1) * 40, 500, 300);
+		g.fillRect(50 + (this.stageNum - 1) * 40, 50 + (this.stageNum - 1) * 40, 550, 300);
 		
 		for( int i = 0; i<array.length; i++){
 			for( int j = 0; j<array[i].length(); j++){
 				switch(array[i].charAt(j)){
 				case '1':
-					g.drawImage(grass, j * 7 + startPosition, i * 5 + startPosition, 5, 3, this);
+					g.drawImage(grass, j * 5 + startPosition, i * 5 + startPosition, 5, 5, this);
 					break ;
 				case '2':
-					g.drawImage(this.wall, j * 7 + startPosition, i * 5 + startPosition, 5, 3, this);
+					g.drawImage(this.wall, j * 5 + startPosition, i * 5 + startPosition, 5, 5, this);
 					break ;
 				case '3':
-					g.drawImage(this.wallUndefeted, j * 7 + startPosition , i * 5 + startPosition, 5, 3, this);
+					g.drawImage(this.wallUndefeted, j * 5 + startPosition , i * 5 + startPosition, 5, 5, this);
 					break ;
 				case '4':
-					g.drawImage(this.water, j * 7 + startPosition, i * 5 + startPosition, 5, 3, this);
+					g.drawImage(this.water, j * 5 + startPosition, i * 5 + startPosition, 5, 5, this);
 					break ;
 				default:
 					break;
