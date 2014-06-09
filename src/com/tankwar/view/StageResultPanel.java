@@ -27,6 +27,9 @@ public class StageResultPanel extends JPanel{
 			new Color(27,162,227),new Color(100,118,136)
 	};*/
 	
+	public Font defaultFontBig = new Font("微软雅黑", Font.PLAIN, 20);
+	
+	
 	public StageResultPanel(){
 		try{
 			//bgBlue = ImageIO.read(new File("source/images/background/blue.jpg"));
@@ -46,6 +49,12 @@ public class StageResultPanel extends JPanel{
 			g.setColor(this.colorList[i % this.colorList.length]);
 			g.fillRect(50 + i * 40 , 50 + i * 40, 400, 200);
 		}*/
+		
+		g.setColor(Color.white);
+		g.setFont(defaultFontBig);
+		g.drawString("Next Stage...", 400, 100);
+		g.drawString("totle killed : ", 400, 200);
+		g.drawString("score : ", 400, 300);
 	}
 
 }

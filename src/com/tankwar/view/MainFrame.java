@@ -1,11 +1,15 @@
 package com.tankwar.view;
 
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.event.MouseInputListener;
 import com.tankwar.domain.DBProxyImpl;
@@ -35,6 +39,7 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 	public int height = Constant.active_area_y ;
 	public int screen_width = Toolkit.getDefaultToolkit().getScreenSize().width ;
 	public int screen_height = Toolkit.getDefaultToolkit().getScreenSize().height ;
+	private Image imageIcon = null ;//icon
 	//游戏中的所用到的面板
 	public MainPanel mainPanel ;//主面板
 	public SceneCreatPanel scenePanel ; //游戏场景绘制面板
@@ -92,6 +97,12 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 	
 	public void interfaceInie(){
 		mainPanel = new MainPanel(this , null);
+		try {
+			imageIcon = ImageIO.read(new File("source/images/system/imageIcon.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		//new Thread(mainPanel).start();
 		setSize(width + 100, height);
 		setLocation((screen_width - width)/2, (screen_height - height)/2);
@@ -104,6 +115,7 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 		addKeyListener(this);
 		addMouseListener(this);
 		addMouseMotionListener(this);
+		this.setIconImage(imageIcon);
 	}
 	
 	public void gamePause(){

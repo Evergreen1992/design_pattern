@@ -6,10 +6,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-
 import com.tankwar.utils.FileUtils;
 import com.tankwar.utils.SceneReaderFactory;
 
@@ -111,7 +109,7 @@ public class StageChosePanel extends JPanel{
 		int startPosition = 100 + (this.stageNum - 1) * 40 ;
 		//50 + i * 40 , 50 + i * 40
 		g.setColor(Color.black);
-		g.fillRect(50 + (this.stageNum - 1) * 40, 50 + (this.stageNum - 1) * 40, 550, 300);
+		g.fillRect(50 + (this.stageNum - 1) * 40, 50 + (this.stageNum - 1) * 40, 450, 300);
 		
 		for( int i = 0; i<array.length; i++){
 			for( int j = 0; j<array[i].length(); j++){
