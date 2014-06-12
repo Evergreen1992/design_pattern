@@ -9,9 +9,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.event.MouseInputListener;
+
 import com.tankwar.domain.DBProxyImpl;
 import com.tankwar.domain.EnemyTankContainer;
 import com.tankwar.entity.Hero;
@@ -21,6 +23,7 @@ import com.tankwar.utils.FileUtils;
 import com.tankwar.utils.Game;
 import com.tankwar.utils.SceneReaderFactory;
 import com.tankwar.utils.SoundPlayFactory;
+import com.tankwar.view.panel.RankingPanel;
 
 /**
  * main frame interface
@@ -45,6 +48,7 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 	public SceneCreatPanel scenePanel ; //游戏场景绘制面板
 	public StageChosePanel sceneChosePanel = null ;//游戏场景选择面板
 	public StageResultPanel stageResultPanel = null ;// 游戏关卡结果面板
+	public RankingPanel rankingPanel = null ; //游戏排行榜面板
 	
 	public Hero hero = null ;//hero
 	public EnemyTankContainer enemyTankContainer ; 
@@ -183,6 +187,8 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 			switchPanel("mainPanel");
 		}else if( event.getKeyCode() == KeyEvent.VK_H){
 			switchPanel("stageResult");
+		}else if( event.getKeyCode() == KeyEvent.VK_G){
+			switchPanel("rankingPanel");
 		}
 		
 		//游戏主面板事件处理
@@ -248,9 +254,11 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 					}else if( this.mainPanel.currentOption == 1){
 						
 					}else if( this.mainPanel.currentOption == 2){
-						
+						switchPanel("sceneCreate");
 					}else if( this.mainPanel.currentOption == 3){
 						System.exit(0);
+					}else if( this.mainPanel.currentOption == 4){
+						switchPanel("rankingPanel");
 					}
 				}
 			}
@@ -315,6 +323,11 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 				this.stageResultPanel = new StageResultPanel();
 			getContentPane().add(stageResultPanel); //切换成游戏主面板
 			Game.switchPanelStatus("stageResult");//切换游戏面板状态
+		}else if( token.equals("rankingPanel")){
+			if( this.rankingPanel == null )
+				this.rankingPanel = new RankingPanel();
+			getContentPane().add(rankingPanel);
+			Game.switchPanelStatus("rankingPanel");
 		}
 		
 		getContentPane().validate();

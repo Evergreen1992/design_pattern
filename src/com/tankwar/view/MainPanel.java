@@ -49,7 +49,7 @@ public class MainPanel extends JPanel{
 	public Font defaultFontSmall = new Font("微软雅黑", Font.BOLD, 15);
 	
 	//菜单文字定义
-	public String[] menuStr = new String[]{"开始游戏", "继续游戏", "场景绘制", "退出游戏"};
+	public String[] menuStr = new String[]{"开始游戏", "继续游戏", "场景绘制", "退出游戏", "排行榜"};
 	public int currentOption = 0 ; //当前选中的菜单项目
 	//游戏主界面菜单选项
 	public String[] gameOption = new String[]{"回主菜单", "暂停/继续"};
