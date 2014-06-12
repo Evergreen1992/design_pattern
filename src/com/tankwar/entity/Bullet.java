@@ -154,7 +154,7 @@ public class Bullet extends Thread{
 						}
 						if( Game.enemy_killed == Constant.defaultEnemiesNum){
 							Game.enemy_killed = 0 ;
-							this.mainFrame.nextStage();
+							//this.mainFrame.nextStage();
 						}
 					}
 				}

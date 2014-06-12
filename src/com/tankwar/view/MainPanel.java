@@ -6,10 +6,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-
 import com.tankwar.domain.PropsContainer;
 import com.tankwar.entity.Bullet;
 import com.tankwar.entity.Enemy;
@@ -31,7 +29,6 @@ public class MainPanel extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
 	public MainFrame mainFrame = null ;
 	public String[] sArray = null ; //map array
 	public Image hero1Up, hero1Down, hero1Left, hero1Right, enemy1Up, enemy1Down, enemy1Left, enemy1Right, wall, grass, wall3, stageChoiceBtnImg = null ;
@@ -47,16 +44,13 @@ public class MainPanel extends JPanel{
 	//字体定义
 	public Font defaultFontBig = new Font("微软雅黑", Font.PLAIN, 20);
 	public Font defaultFontSmall = new Font("微软雅黑", Font.BOLD, 15);
-	
 	//菜单文字定义
 	public String[] menuStr = new String[]{"开始游戏", "继续游戏", "场景绘制", "退出游戏", "排行榜"};
 	public int currentOption = 0 ; //当前选中的菜单项目
 	//游戏主界面菜单选项
 	public String[] gameOption = new String[]{"回主菜单", "暂停/继续"};
 	public int gameOptionCursor = 0 ; //选项游标
-	
 	public int number = 0 ;
-	
 	
 	public MainPanel(MainFrame frame, String[] sArray){
 		this.mainFrame = frame ;
@@ -67,12 +61,10 @@ public class MainPanel extends JPanel{
 			hero1Down = ImageIO.read(new File("source/images/hero/hero1_down.png"));
 			hero1Left = ImageIO.read(new File("source/images/hero/hero1_left.png"));
 			hero1Right = ImageIO.read(new File("source/images/hero/hero1_right.png"));
-			
 			enemy1Up = ImageIO.read(new File("source/images/enemy/enemy1_up.png"));
 			enemy1Down = ImageIO.read(new File("source/images/enemy/enemy1_down.png"));
 			enemy1Left = ImageIO.read(new File("source/images/enemy/enemy1_left.png"));
 			enemy1Right = ImageIO.read(new File("source/images/enemy/enemy1_right.png"));
-		
 			grass = ImageIO.read(new File("source/images/grass.png"));
 			wall = ImageIO.read(new File("source/images/wall.png"));
 			wall3 = ImageIO.read(new File("source/images/wall2.png"));
@@ -84,7 +76,6 @@ public class MainPanel extends JPanel{
 			water = ImageIO.read(new File("source/images/water.png"));
 			stageChoiceBtnImg = ImageIO.read(new File("source/images/system/stage_choice_button.png"));
 			boss = ImageIO.read(new File("source/images/hero/boss.png"));
-			
 			prop_mime = ImageIO.read(new File("source/images/prop/mime.png"));
 			prop_hat = ImageIO.read(new File("source/images/prop/hat.png"));
 			prop_star = ImageIO.read(new File("source/images/prop/star.png"));
@@ -113,23 +104,16 @@ public class MainPanel extends JPanel{
 		if(Game.status == Game.STATUS_MENU){ //主菜单绘制
 			g.setColor(Color.WHITE);
 			g.fillRect(0, 0, this.mainFrame.width, this.mainFrame.height);
-			
-			
 			//背景颜色
 			g.setColor(bgColor);
 			g.fillRect(0, 0, 900, 600);
-			
 			g.setColor(Color.white);
 			g.setFont(this.defaultFontBig);
 			g.drawString("Tank War 2014", 380, 100);
-			
-			
 			//默认字体设置
 			g.setColor(Color.black);
 			g.setFont(defaultFontBig);//设置字体
-			
-			
-			
+		
 			//菜单项目绘制
 			for( int i = 0; i<this.menuStr.length; i++){
 				if( i == currentOption){//当前选中的菜单项目
@@ -247,7 +231,7 @@ public class MainPanel extends JPanel{
 	/**
 	 * draw tanks
 	 */
-	public void drawTank(Graphics g){
+	public synchronized void drawTank(Graphics g){
 		
 		//if hero is alive
 		if( this.mainFrame.hero.getStatus() == Tank.ALIVE){

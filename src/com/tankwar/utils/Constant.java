@@ -32,7 +32,7 @@ public class Constant {
 	/*
 	 * default enemy number
 	 */
-	public static final int defaultEnemiesNum = 5 ;
+	public static final int defaultEnemiesNum = 5 ;//默认每一关卡最大的敌军坦克数量
 	
 	/*
 	 * rectangle(the walls') width and height

@@ -9,11 +9,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.event.MouseInputListener;
-
 import com.tankwar.domain.DBProxyImpl;
 import com.tankwar.domain.EnemyTankContainer;
 import com.tankwar.entity.Hero;
@@ -37,7 +35,6 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
 	public int width = Constant.active_area_x ;
 	public int height = Constant.active_area_y ;
 	public int screen_width = Toolkit.getDefaultToolkit().getScreenSize().width ;
@@ -49,17 +46,14 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 	public StageChosePanel sceneChosePanel = null ;//游戏场景选择面板
 	public StageResultPanel stageResultPanel = null ;// 游戏关卡结果面板
 	public RankingPanel rankingPanel = null ; //游戏排行榜面板
-	
 	public Hero hero = null ;//hero
 	public EnemyTankContainer enemyTankContainer ; 
 	public String[] mapArray = null ;//the map of the background
 	public int pointer_x = 0 , pointer_y = 0 ;//鼠标位置
-	
 	public MsgDialog messageDialog = null ;
 	
 	
 	public MainFrame(){
-		//initTank();
 		interfaceInie();
 	}
 	
@@ -77,7 +71,7 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 		hero.setMainFrame(this);
 		//enemies initial
 		enemyTankContainer = new EnemyTankContainer(this);
-		enemyTankContainer.initEnemies(Constant.defaultEnemiesNum);
+		enemyTankContainer.initEnemies(3);
 	}
 	
 	public void resumeTank(){
@@ -130,8 +124,7 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 		Game.nextStage();
 		this.mapArray = SceneReaderFactory.readMap(Game.stage);
 		this.enemyTankContainer = new EnemyTankContainer(this);
-		this.enemyTankContainer.initEnemies(Constant.defaultEnemiesNum);
-		
+		this.enemyTankContainer.initEnemies(3);
 		this.mainPanel.sArray = mapArray ;
 		this.hero.setMapArray(mapArray);
 		hero.setLocation_x(400);
@@ -415,10 +408,13 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 	}
 	
 	public void run() {
+		int totleSleepTime = 0 ; 
 		while(true){
-			//System.out.println("主线程运行中...........");
 			try {
 				Thread.sleep(100);
+				totleSleepTime ++ ;
+				if( totleSleepTime == 100)
+					totleSleepTime = 0 ; 
 				
 				//重绘主面板
 				if(  Game.PANEL_STATUS == Game.PANEL_STATUS_MAINPANEL ){
@@ -444,12 +440,24 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 						this.stageResultPanel.repaint();
 				}
 				
-				
 				/*//判断是否开始下一关
 				if( this.enemyTankContainer != null && this.enemyTankContainer.getAliveNumber() == 0)
 					this.nextStage();*/
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+			}
+			
+			//敌军坦克数量控制
+			if( this.enemyTankContainer != null ){
+				if( totleSleepTime % 10 == 0 )//每一秒判断一次
+				{
+					if( this.enemyTankContainer.getAliveNum() < 3 && this.enemyTankContainer.getEnemyList().size() < Constant.defaultEnemiesNum){
+						if( totleSleepTime % 20 == 0)
+							this.enemyTankContainer.initEnemies(1);
+					}else if( this.enemyTankContainer.getTotleKilledThisStage() == Constant.defaultEnemiesNum){
+						this.nextStage();//开始下一关
+					}
+				}
 			}
 		}
 	}
