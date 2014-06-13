@@ -1,7 +1,6 @@
 package com.tankwar.view;
 
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -11,6 +10,9 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JRootPane;
+import javax.swing.UIManager;
 import javax.swing.event.MouseInputListener;
 import com.tankwar.domain.DBProxyImpl;
 import com.tankwar.domain.EnemyTankContainer;
@@ -50,7 +52,7 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 	public EnemyTankContainer enemyTankContainer ; 
 	public String[] mapArray = null ;//the map of the background
 	public int pointer_x = 0 , pointer_y = 0 ;//鼠标位置
-	public MsgDialog messageDialog = null ;
+	//public MsgDialog messageDialog = null ;
 	
 	
 	public MainFrame(){
@@ -94,6 +96,7 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 	}
 	
 	public void interfaceInie(){
+
 		mainPanel = new MainPanel(this , null);
 		try {
 			imageIcon = ImageIO.read(new File("source/images/system/imageIcon.png"));
@@ -104,6 +107,10 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 		//new Thread(mainPanel).start();
 		setSize(width + 100, height);
 		setLocation((screen_width - width)/2, (screen_height - height)/2);
+		
+		JRootPane rp = getRootPane();   
+        rp.setWindowDecorationStyle(JRootPane.FRAME);   
+		
 		add(mainPanel);
 		setTitle("Tank War ");
 		setResizable(false);
@@ -132,13 +139,15 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 	}
 	
 	public void backToMenu(){
-		if( Game.stage <= Constant.MAP_Array_SIZE_HEIGHT ){
+		/*if( Game.stage <= Constant.MAP_Array_SIZE_HEIGHT ){
 			//记录游戏数据
 			new DBProxyImpl().recordGameData(enemyTankContainer.getEnemyList(), hero);
 		}
 		//set data to null
 		enemyTankContainer.stopThread() ;
-		System.exit(0);
+		System.exit(0);*/
+		enemyTankContainer = null ;
+		Game.status = Game.STATUS_MENU ;
 	}
 	
 	/**
@@ -203,19 +212,7 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 				}else if( event.getKeyCode() == KeyEvent.VK_P){
 					hero.fire();
 				}else if( event.getKeyCode() == KeyEvent.VK_ESCAPE){
-					/*int result = JOptionPane.showConfirmessageDialogialog(this, "游戏未结束，确定要存档并退出?");
-					switch(result){
-					case 0: backToMenu();
-					default : ;
-					}*/
-					if( this.messageDialog == null){
-						this.messageDialog = new MsgDialog(this, "游戏未结束，确定要存档并退出?");
-						this.messageDialog.setVisible(true);
-					}else{
-						this.messageDialog.setVisible(true);
-						this.messageDialog.panel.title = "游戏未结束，确定要存档并退出?" ;
-						this.messageDialog.panel.repaint();
-					}
+					JOptionPane.showConfirmDialog(this, "游戏未结束，确定要存档并退出?");
 				}else if( event.getKeyCode() == KeyEvent.VK_UP){
 					mainPanel.setGameOption(0);
 				}else if(event.getKeyCode() == KeyEvent.VK_DOWN){
@@ -249,7 +246,10 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 					}else if( this.mainPanel.currentOption == 2){
 						switchPanel("sceneCreate");
 					}else if( this.mainPanel.currentOption == 3){
-						System.exit(0);
+						int option = JOptionPane.showConfirmDialog(this, "是否退出游戏?");
+						
+						if( option == 0)
+							System.exit(0);
 					}else if( this.mainPanel.currentOption == 4){
 						switchPanel("rankingPanel");
 					}
@@ -362,7 +362,6 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 				this.scenePanel.setBlockType(4);
 			}
 			
-			
 			//鼠标模式
 			if( this.scenePanel.getModel() == 0  ){
 				//判断
@@ -391,9 +390,9 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 	}
 	
 	public void mouseDragged(MouseEvent e) {
-		Point p = this.getLocation();
+		//Point p = this.getLocation();
 		if( Game.PANEL_STATUS != Game.PANEL_STATUS_SCENE_BUILD ){
-			setLocation(p.x + e.getX() - this.pointer_x, p.y + e.getY()- this.pointer_y);
+			//setLocation(p.x + e.getX() - this.pointer_x, p.y + e.getY()- this.pointer_y);
 		}
 		else{
 			if( this.scenePanel.getModel() == 0)
@@ -455,7 +454,15 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 						if( totleSleepTime % 20 == 0)
 							this.enemyTankContainer.initEnemies(1);
 					}else if( this.enemyTankContainer.getTotleKilledThisStage() == Constant.defaultEnemiesNum){
-						this.nextStage();//开始下一关
+						//关卡提示
+						int option = JOptionPane.showConfirmDialog(this, "是否开始下一关卡游戏?");
+						
+						if( option == 0 ){
+							this.nextStage();
+						}
+						else if( option == 1){
+							this.backToMenu();
+						}
 					}
 				}
 			}
@@ -463,6 +470,12 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 	}
 	
 	public static void main(String[] args){
-		new Thread(new MainFrame()).start();;
+		
+		try {   
+			UIManager.setLookAndFeel("ch.randelshofer.quaqua.QuaquaLookAndFeel");   
+	    } catch (Exception e) {   
+	    	System.err.println("Oops! Something went wrong!");   
+	    }   
+		new Thread(new MainFrame()).start();
 	}
 }
