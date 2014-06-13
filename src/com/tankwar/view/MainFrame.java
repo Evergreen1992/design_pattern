@@ -23,6 +23,7 @@ import com.tankwar.utils.FileUtils;
 import com.tankwar.utils.Game;
 import com.tankwar.utils.SceneReaderFactory;
 import com.tankwar.utils.SoundPlayFactory;
+import com.tankwar.view.dialog.Dialog;
 import com.tankwar.view.panel.RankingPanel;
 
 /**
@@ -109,10 +110,10 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 		setLocation((screen_width - width)/2, (screen_height - height)/2);
 		
 		JRootPane rp = getRootPane();   
-        rp.setWindowDecorationStyle(JRootPane.FRAME);   
+        rp.setWindowDecorationStyle(JRootPane.FRAME); 
 		
 		add(mainPanel);
-		setTitle("Tank War ");
+		setTitle("坦克大战");
 		setResizable(false);
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -212,7 +213,8 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 				}else if( event.getKeyCode() == KeyEvent.VK_P){
 					hero.fire();
 				}else if( event.getKeyCode() == KeyEvent.VK_ESCAPE){
-					JOptionPane.showConfirmDialog(this, "游戏未结束，确定要存档并退出?");
+					//JOptionPane.showConfirmDialog(this, "游戏未结束，确定要存档并退出?");
+					new Dialog(this, "游戏未结束，确定要存档并退出?");
 				}else if( event.getKeyCode() == KeyEvent.VK_UP){
 					mainPanel.setGameOption(0);
 				}else if(event.getKeyCode() == KeyEvent.VK_DOWN){
@@ -246,10 +248,11 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 					}else if( this.mainPanel.currentOption == 2){
 						switchPanel("sceneCreate");
 					}else if( this.mainPanel.currentOption == 3){
-						int option = JOptionPane.showConfirmDialog(this, "是否退出游戏?");
+						/*int option = JOptionPane.showConfirmDialog(this, "是否退出游戏?");
 						
 						if( option == 0)
-							System.exit(0);
+							System.exit(0);*/
+						new Dialog(this, "确定要退出游戏吗?");
 					}else if( this.mainPanel.currentOption == 4){
 						switchPanel("rankingPanel");
 					}
@@ -470,7 +473,6 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 	}
 	
 	public static void main(String[] args){
-		
 		try {   
 			UIManager.setLookAndFeel("ch.randelshofer.quaqua.QuaquaLookAndFeel");   
 	    } catch (Exception e) {   
