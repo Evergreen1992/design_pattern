@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/java8"/>
+	<classpathentry kind="lib" path="D:/java/JTattoo-1.6.8.jar"/>
+	<classpathentry kind="lib" path="D:/java/quaqua.jar"/>
+	<classpathentry kind="lib" path="D:/java/lookAndFeel/Quaqua/dist/quaqua.jar"/>
+	<classpathentry kind="lib" path="D:/java/lookAndFeel/Quaqua/dist/quaqua-filechooser-only.jar"/>
+	<classpathentry kind="lib" path="D:/java/lookAndFeel/Quaqua/dist/quaqua-test.jar"/>
+	<classpathentry kind="lib" path="D:/java/lookAndFeel/Quaqua/dist/swing-layout.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

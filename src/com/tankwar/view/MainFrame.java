@@ -8,12 +8,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JRootPane;
 import javax.swing.UIManager;
 import javax.swing.event.MouseInputListener;
+
 import com.tankwar.domain.DBProxyImpl;
 import com.tankwar.domain.EnemyTankContainer;
 import com.tankwar.entity.Hero;
@@ -24,6 +26,7 @@ import com.tankwar.utils.Game;
 import com.tankwar.utils.SceneReaderFactory;
 import com.tankwar.utils.SoundPlayFactory;
 import com.tankwar.view.dialog.Dialog;
+import com.tankwar.view.dialog.InputDialog;
 import com.tankwar.view.panel.RankingPanel;
 
 /**
@@ -43,7 +46,7 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 	public int screen_width = Toolkit.getDefaultToolkit().getScreenSize().width ;
 	public int screen_height = Toolkit.getDefaultToolkit().getScreenSize().height ;
 	private Image imageIcon = null ;//icon
-	//游戏中的所用到的面板
+	
 	public MainPanel mainPanel ;//主面板
 	public SceneCreatPanel scenePanel ; //游戏场景绘制面板
 	public StageChosePanel sceneChosePanel = null ;//游戏场景选择面板
@@ -53,7 +56,6 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 	public EnemyTankContainer enemyTankContainer ; 
 	public String[] mapArray = null ;//the map of the background
 	public int pointer_x = 0 , pointer_y = 0 ;//鼠标位置
-	//public MsgDialog messageDialog = null ;
 	
 	
 	public MainFrame(){
@@ -139,7 +141,13 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 		hero.setLocation_y(400);
 	}
 	
+	/**
+	 * 返回主菜单
+	 */
 	public void backToMenu(){
+		System.out.println("回主菜单***************");
+		
+		
 		/*if( Game.stage <= Constant.MAP_Array_SIZE_HEIGHT ){
 			//记录游戏数据
 			new DBProxyImpl().recordGameData(enemyTankContainer.getEnemyList(), hero);
@@ -147,7 +155,14 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 		//set data to null
 		enemyTankContainer.stopThread() ;
 		System.exit(0);*/
-		enemyTankContainer = null ;
+		
+		this.switchPanel("mainPanel");
+		
+		if( enemyTankContainer != null ){	
+			enemyTankContainer.stopEnemies();
+			enemyTankContainer = null ;
+		}
+		
 		Game.status = Game.STATUS_MENU ;
 	}
 	
@@ -229,9 +244,10 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 							System.out.println("开始游戏");
 						}
 						
-					}else if( mainPanel.gameOptionCursor == 0){
-						this.enemyTankContainer = null;
-						Game.status = Game.STATUS_MENU;
+					}else if( mainPanel.gameOptionCursor == 0){//回主菜单
+						/*this.enemyTankContainer = null;
+						Game.status = Game.STATUS_MENU;*/
+						this.backToMenu();
 					}
 				}
 			}else if( Game.status == Game.STATUS_MENU){//主菜单页面
@@ -244,17 +260,16 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 						//开始游戏
 						gameStart();
 					}else if( this.mainPanel.currentOption == 1){
-						
+						//JOptionPane.showInputDialog("fff");
+						new InputDialog();
 					}else if( this.mainPanel.currentOption == 2){
 						switchPanel("sceneCreate");
 					}else if( this.mainPanel.currentOption == 3){
-						/*int option = JOptionPane.showConfirmDialog(this, "是否退出游戏?");
-						
-						if( option == 0)
-							System.exit(0);*/
-						new Dialog(this, "确定要退出游戏吗?");
-					}else if( this.mainPanel.currentOption == 4){
 						switchPanel("rankingPanel");
+					}else if( this.mainPanel.currentOption == 4){
+						switchPanel("sceneChose");
+					}else if( this.mainPanel.currentOption == 5){
+						new Dialog(this, "确定要退出游戏吗?");
 					}
 				}
 			}
@@ -321,7 +336,7 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 			Game.switchPanelStatus("stageResult");//切换游戏面板状态
 		}else if( token.equals("rankingPanel")){
 			if( this.rankingPanel == null )
-				this.rankingPanel = new RankingPanel();
+				this.rankingPanel = new RankingPanel(this);
 			getContentPane().add(rankingPanel);
 			Game.switchPanelStatus("rankingPanel");
 		}
@@ -466,6 +481,7 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 						else if( option == 1){
 							this.backToMenu();
 						}
+						//new Dialog(this, "是否开始下一关卡游戏?");
 					}
 				}
 			}
@@ -476,7 +492,7 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 		try {   
 			UIManager.setLookAndFeel("ch.randelshofer.quaqua.QuaquaLookAndFeel");   
 	    } catch (Exception e) {   
-	    	System.err.println("Oops! Something went wrong!");   
+	    	System.err.println("皮肤加载失败！");   
 	    }   
 		new Thread(new MainFrame()).start();
 	}

@@ -2,6 +2,7 @@ package com.tankwar.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.tankwar.entity.Bullet;
 import com.tankwar.entity.Enemy;
 import com.tankwar.entity.Tank;
 import com.tankwar.utils.StaticCreateFactory;
@@ -146,8 +147,14 @@ public class EnemyTankContainer {
 	}
 	
 	//清除线程数据
-	public void stopThread(){
-
+	public void stopEnemies(){
+		for(Enemy e : this.enemyList){
+			//stop bullets
+			for(Bullet b : e.getBullts()){
+				b.setStatus(Bullet.DEAD);
+			}
+			e.setStatus(Tank.DIED);
+		}
 	}
 	
 	public int getTotleKilledThisStage() {

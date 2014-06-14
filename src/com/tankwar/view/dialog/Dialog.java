@@ -8,7 +8,6 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
-
 import com.tankwar.view.MainFrame;
 
 public class Dialog extends JDialog implements ActionListener{

@@ -4,10 +4,14 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+
 import com.tankwar.domain.PropsContainer;
 import com.tankwar.entity.Bullet;
 import com.tankwar.entity.Enemy;
@@ -23,7 +27,7 @@ import com.tankwar.utils.Game;
  * @author Evergreen
  *
  */
-public class MainPanel extends JPanel{
+public class MainPanel extends JPanel implements MouseListener{
 
 	/**
 	 * 
@@ -45,7 +49,7 @@ public class MainPanel extends JPanel{
 	public Font defaultFontBig = new Font("微软雅黑", Font.PLAIN, 20);
 	public Font defaultFontSmall = new Font("微软雅黑", Font.BOLD, 15);
 	//菜单文字定义
-	public String[] menuStr = new String[]{"开始游戏", "继续游戏", "场景绘制", "退出游戏", "排行榜"};
+	public String[] menuStr = new String[]{"开始游戏", "继续游戏", "场景绘制", "排  行  榜", "关卡查看", "退出游戏"};
 	public int currentOption = 0 ; //当前选中的菜单项目
 	//游戏主界面菜单选项
 	public String[] gameOption = new String[]{"回主菜单", "暂停/继续"};
@@ -83,6 +87,8 @@ public class MainPanel extends JPanel{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		this.addMouseListener(this);
 	}
 	//设置选中的项目
 	public void setCurrentOption(int value){
@@ -105,7 +111,7 @@ public class MainPanel extends JPanel{
 			g.setColor(Color.WHITE);
 			g.fillRect(0, 0, this.mainFrame.width, this.mainFrame.height);
 			//背景颜色
-			g.setColor(bgColor);
+			g.setColor(Color.black);
 			g.fillRect(0, 0, 900, 600);
 			g.setColor(Color.white);
 			g.setFont(this.defaultFontBig);
@@ -318,5 +324,25 @@ public class MainPanel extends JPanel{
 			else
 				gameOptionCursor = gameOption.length - 1 ;
 		}
+	}
+	
+	public void mouseClicked(MouseEvent e) {
+		System.out.println("mainPanel 点击鼠标");
+	}
+	
+	public void mousePressed(MouseEvent e) {
+		
+	}
+	
+	public void mouseReleased(MouseEvent e) {
+		
+	}
+	
+	public void mouseEntered(MouseEvent e) {
+		
+	}
+	
+	public void mouseExited(MouseEvent e) {
+		
 	}
 }
