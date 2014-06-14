@@ -115,7 +115,7 @@ public class MainPanel extends JPanel implements MouseListener{
 			g.fillRect(0, 0, 900, 600);
 			g.setColor(Color.white);
 			g.setFont(this.defaultFontBig);
-			g.drawString("Tank War 2014", 380, 100);
+			g.drawString("坦克大战 2014", 380, 100);
 			//默认字体设置
 			g.setColor(Color.black);
 			g.setFont(defaultFontBig);//设置字体

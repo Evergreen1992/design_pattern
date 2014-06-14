@@ -67,4 +67,9 @@ public class Constant {
 	 * 道具的长度和宽度
 	 */
 	public static final int PROP_WIDTH_HEIGHT = 20 ;
+	
+	/**
+	 * 数据库类型
+	 */
+	public static final String dbType = "mysql";
 }

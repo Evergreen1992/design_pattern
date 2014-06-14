@@ -8,14 +8,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JRootPane;
 import javax.swing.UIManager;
 import javax.swing.event.MouseInputListener;
-
 import com.tankwar.domain.DBProxyImpl;
 import com.tankwar.domain.EnemyTankContainer;
 import com.tankwar.entity.Hero;
@@ -494,6 +492,8 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 	    } catch (Exception e) {   
 	    	System.err.println("皮肤加载失败！");   
 	    }   
+		
+		
 		new Thread(new MainFrame()).start();
 	}
 }
