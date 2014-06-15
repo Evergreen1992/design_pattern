@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="D:/java/lookAndFeel/Quaqua/dist/quaqua-filechooser-only.jar"/>
 	<classpathentry kind="lib" path="D:/java/lookAndFeel/Quaqua/dist/quaqua-test.jar"/>
 	<classpathentry kind="lib" path="D:/java/lookAndFeel/Quaqua/dist/swing-layout.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Administrator/Desktop/ojdbc6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

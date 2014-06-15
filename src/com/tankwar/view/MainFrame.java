@@ -504,7 +504,6 @@ public class MainFrame extends JFrame implements Runnable , KeyListener{
 	    	System.err.println("皮肤加载失败！");   
 	    }   
 		
-		
 		new Thread(new MainFrame()).start();
 	}
 }

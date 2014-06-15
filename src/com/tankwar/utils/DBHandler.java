@@ -1,8 +1,10 @@
 package com.tankwar.utils;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+
 import com.tankwar.entity.Enemy;
 import com.tankwar.entity.Hero;
 import com.tankwar.entity.Tank;
@@ -11,8 +13,34 @@ import com.tankwar.entity.Tank;
  * database methods.数据库操作类
  * @author Evergreen
  *
+ *insert into T_RANKING values(id_creator.nextval, 'Evergreen', 100, 1);
  */
 public class DBHandler extends DBFactory{
+	
+	/**
+	 * 获取排名榜集合
+	 * @return
+	 */
+	public List<String> getRankingData(){
+		List<String> ranking = new ArrayList<String>();
+		ResultSet rs = this.getResultSet("select * from t_ranking order by score desc");
+		StringBuffer sb = null ;
+		
+		try {
+			while( rs.next() ){
+				sb = new StringBuffer();
+				sb.append(rs.getString("player") + ",");
+				sb.append(rs.getInt("stage") + ",");
+				sb.append(rs.getInt("score") + ",");
+				sb.append(rs.getString("time"));
+				ranking.add(sb.toString());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return ranking ;
+	}
 	
 	/**
 	 * 恢复数据
@@ -93,13 +121,9 @@ public class DBHandler extends DBFactory{
 	}
 	
 	public static void main(String[] args) {
-		//
-		/*updateBestScore(100);
-		System.out.println(getHistoryHigh());*/
-		Hero h = new com.tankwar.entity.Hero(null);
-		h.setLocation_x(200);
-		h.setLocation_y(400);
-		h.setDirection(3);
-		new DBHandler().recordGameData(null, h);
+		List<String> list = new DBHandler().getRankingData();
+		for(String s : list){
+			System.out.println(s);
+		}
 	}
 }

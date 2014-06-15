@@ -14,19 +14,26 @@ public class ConnectionUtil {
 	
 	private String dbType = Constant.dbType;//数据库类型
 	
+	String urlOracle = "jdbc:oracle:thin:@127.0.0.1:1521:ORCL";
+	String urlMysql = "jdbc:mysql://222.18.159.6:3306/appTest?"+ "user=appTest&password=appTest"; 
+	
+	
 	private ConnectionUtil(){
 		
-		//mysql数据库
 		if( dbType.equals("mysql")){
 			try {
-				String url = "jdbc:mysql://222.18.159.6:3306/appTest?"+ "user=appTest&password=appTest"; 
 				Class.forName("com.mysql.jdbc.Driver");
-				conn = DriverManager.getConnection(url);
+				conn = DriverManager.getConnection(urlMysql);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}else if( dbType.equals("oracle")){
-			
+			try {
+				Class.forName("oracle.jdbc.driver.OracleDriver");
+				conn = DriverManager.getConnection(urlOracle, "tankwar", "tankwar");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	

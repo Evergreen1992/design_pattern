@@ -1,5 +1,6 @@
 package com.tankwar.utils;
 
+
 /**
  * some useful constant value
  * @author Evergreen
@@ -71,5 +72,19 @@ public class Constant {
 	/**
 	 * 数据库类型
 	 */
-	public static final String dbType = "mysql";
+	public static final String dbType = "oracle";
+	
+	
+	/*public static String[][] rowData = null ;
+	
+	//加载排行榜信息
+	static{
+		//加载数据
+		List<String> data = new DBHandler().getRankingData();
+		rowData = new String[data.size()][];
+		
+		for(int i = 0 ; i < rowData.length; i++){
+			rowData[i] = data.get(i).split(",") ;
+		}
+	}*/
 }
