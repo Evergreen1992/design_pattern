@@ -11,6 +11,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.event.MouseInputListener;
 
 import com.tankwar.domain.PropsContainer;
 import com.tankwar.entity.Bullet;
@@ -27,7 +28,7 @@ import com.tankwar.utils.Game;
  * @author Evergreen
  *
  */
-public class MainPanel extends JPanel implements MouseListener{
+public class MainPanel extends JPanel implements MouseListener, MouseInputListener{
 
 	/**
 	 * 
@@ -39,6 +40,10 @@ public class MainPanel extends JPanel implements MouseListener{
 	public Image exploerdImage , button_start, button_level, button_score , gameOverImg, water, boss = null ;
 	//道具图片
 	public Image prop_mime, prop_hat , prop_star, prop_life = null ;
+	//返回按钮
+	private Image returnBtn1 = null , returnBtn2 = null ;
+	private boolean returnBtnFlag = false ; //返回按钮状态
+	
 	//一些颜色定义
 	public Color briterGreen = new Color(111, 143, 47);
 	public Color deepGreen = new Color(216, 233, 196);
@@ -83,12 +88,16 @@ public class MainPanel extends JPanel implements MouseListener{
 			prop_mime = ImageIO.read(new File("source/images/prop/mime.png"));
 			prop_hat = ImageIO.read(new File("source/images/prop/hat.png"));
 			prop_star = ImageIO.read(new File("source/images/prop/star.png"));
-			prop_life = ImageIO.read(new File("source/images/prop/life.png")); ;
+			prop_life = ImageIO.read(new File("source/images/prop/life.png"));
+			
+			returnBtn1 = ImageIO.read(new File("source/images/system/buttons/return_1.png"));
+			returnBtn2 = ImageIO.read(new File("source/images/system/buttons/return_2.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
 	}
 	//设置选中的项目
 	public void setCurrentOption(int value){
@@ -205,6 +214,14 @@ public class MainPanel extends JPanel implements MouseListener{
 		}
 		
 		g.drawString("第" + Game.stage + "关", 822, 31);
+		
+		//返回按钮
+		if( returnBtnFlag == true ){
+			g.drawImage(returnBtn2, 850, 300, 40, 40, this);
+		}
+		else{
+			g.drawImage(returnBtn1, 850, 300, 40, 40, this);
+		}
 	}
 	
 	public void drawBossTank(Graphics g){
@@ -327,7 +344,18 @@ public class MainPanel extends JPanel implements MouseListener{
 	}
 	
 	public void mouseClicked(MouseEvent e) {
-		System.out.println("mainPanel 点击鼠标");
+		
+		//菜单中的鼠标事件
+		if( Game.status == Game.STATUS_MENU){
+			int option = (e.getY() - 170) /50 - 1;
+			if( option >= 0 && option < this.menuStr.length)
+				currentOption = option ;
+		}
+		
+		//点击返回按钮
+		if( e.getX() >= 850 && e.getX() <= 890 && e.getY() >= 300 && e.getY() <= 340){
+			this.mainFrame.backToMenu();
+		}
 	}
 	
 	public void mousePressed(MouseEvent e) {
@@ -344,5 +372,17 @@ public class MainPanel extends JPanel implements MouseListener{
 	
 	public void mouseExited(MouseEvent e) {
 		
+	}
+	
+	public void mouseDragged(MouseEvent e) {
+		
+	}
+	
+	public void mouseMoved(MouseEvent e) {
+		if( e.getX() >= 850 && e.getX() <= 890 && e.getY() >= 300 && e.getY() <= 340){
+			this.returnBtnFlag = true ;
+		}else{
+			this.returnBtnFlag = false ;
+		}
 	}
 }

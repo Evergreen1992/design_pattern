@@ -3,10 +3,12 @@ package com.tankwar.view;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.event.MouseInputListener;
 import com.tankwar.utils.Constant;
 import com.tankwar.utils.Game;
 
@@ -15,7 +17,7 @@ import com.tankwar.utils.Game;
  * @author Administrator
  *
  */
-public class SceneCreatPanel extends JPanel{
+public class SceneCreatPanel extends JPanel implements MouseInputListener{
 
 	/**
 	 * 
@@ -31,14 +33,26 @@ public class SceneCreatPanel extends JPanel{
 	private int model = 0 ; //操作方式(0:鼠标模式  1:键盘模式)
 	private int blockType = 0 ; //方块类型
 	
+	private Image returnBtn1 , returnBtn2 = null ;
+	private boolean returnBtnFlag = false ;//鼠标是否在返回按钮上面(5, 5, 45, 45)
 	
+	private int current_x = 0 , current_y = 0 ;//拖拽鼠标起点
+	
+	private MainFrame mf  = null ;
+	
+	public void setReturnBtnFlag(boolean returnBtnFlag) {
+		System.out.println("9999999");
+		this.returnBtnFlag = returnBtnFlag;
+	}
+
 	//设置地图属性值
 	public void setMapValue(){
 		if( pointer_x >=0 && pointer_x < Constant.MAP_Array_SIZE && pointer_y < 80 && pointer_y >=0)
 			this.array[pointer_x][pointer_y] = this.current_type ;
 	}
 	
-	public SceneCreatPanel(){
+	public SceneCreatPanel(MainFrame mf){
+		this.mf = mf ;
 		try {
 			grass = ImageIO.read(new File("source/images/grass.png"));
 			wall = ImageIO.read(new File("source/images/wall.png"));
@@ -46,9 +60,15 @@ public class SceneCreatPanel extends JPanel{
 			water = ImageIO.read(new File("source/images/water.png"));
 			saveBtnImg = ImageIO.read(new File("source/images/system/saveScene.png"));
 			bgImage = ImageIO.read(new File("source/images/background/purple.png"));
+			
+			returnBtn1 = ImageIO.read(new File("source/images/system/buttons/return_1.png"));
+			returnBtn2 = ImageIO.read(new File("source/images/system/buttons/return_2.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
 	}
 	
 	public void paint(Graphics g){
@@ -110,6 +130,15 @@ public class SceneCreatPanel extends JPanel{
 			g.drawRect(650, 555, 40, 40);
 		}else if( this.blockType == 4){
 			g.drawRect(700, 555, 40, 40);
+		}
+		
+		
+		//返回按钮
+		if( returnBtnFlag == true ){
+			g.drawImage(returnBtn2, 5, 5, 40, 40, this);
+		}
+		else{
+			g.drawImage(returnBtn1, 5, 5, 40, 40, this);
 		}
 	}
 	
@@ -263,5 +292,74 @@ public class SceneCreatPanel extends JPanel{
 
 	public void setBlockType(int blockType) {
 		this.blockType = blockType;
+	}
+
+	
+	public void mouseClicked(MouseEvent e) {
+		
+		if( e.getX() >= 5 && e.getX() <= 45 && e.getY() >= 5 && e.getY() <= 45){
+			this.mf.backToMenu();
+		}
+		
+		//菜单选项
+		if( e.getX() >= 50 && e.getX() <= 150 && e.getY() >= 555 && e.getY() <= 595){
+			setModel(0);
+		}else if(e.getX() >= 160 && e.getX() <= 260 && e.getY() >= 555 && e.getY() <= 595){
+			setModel(1);
+		}else if(e.getX() >= 270 && e.getX() <= 370 && e.getY() >= 555 && e.getY() <= 595){
+			System.out.println("3");
+		}else if(e.getX() >= 380 && e.getX() <= 480 && e.getY() >= 555 && e.getY() <= 595){
+			System.out.println("4");
+		}else if(e.getX() >= 500 && e.getX() <= 540 && e.getY() >= 555 && e.getY() <= 595){
+			setBlockType(0);
+		}else if(e.getX() >= 550 && e.getX() <= 590 && e.getY() >= 555 && e.getY() <= 595){
+			setBlockType(1);
+		}else if(e.getX() >= 600 && e.getX() <= 640 && e.getY() >= 555 && e.getY() <= 595){
+			setBlockType(2);
+		}else if(e.getX() >= 650 && e.getX() <= 690 && e.getY() >= 555 && e.getY() <= 595){
+			setBlockType(3);
+		}else if(e.getX() >= 700 && e.getX() <= 740 && e.getY() >= 555 && e.getY() <= 595){
+			setBlockType(4);
+		}
+		
+		//鼠标模式
+		if( getModel() == 0  ){
+			//判断
+			if( (e.getY() - 50)/10 >= 0 && (e.getY() - 50)/10 < Constant.MAP_Array_SIZE && (e.getX() - 50)/10 >= 0 && (e.getX() - 50)/10 <= 79){
+				setBlockType((e.getY() - 50)/10 , (e.getX() - 50)/10 );
+			}
+		}
+	}
+
+	public void mousePressed(MouseEvent e) {
+		this.current_x = e.getX();
+		this.current_y = e.getY();
+	}
+	
+	public void mouseReleased(MouseEvent e) {
+		
+	}
+
+	public void mouseEntered(MouseEvent e) {
+		
+	}
+
+	public void mouseExited(MouseEvent e) {
+		
+	}
+
+	public void mouseDragged(MouseEvent e) {
+		if( getModel() == 0)
+		{
+			 batchHandle(this.current_x, this.current_y , e.getX(), e.getY());
+		}
+	}
+
+	public void mouseMoved(MouseEvent e) {
+		if( e.getX() >= 5 && e.getX() <= 45 && e.getY() >= 5 && e.getY() <= 45){
+			this.returnBtnFlag = true ;
+		}else{
+			this.returnBtnFlag = false ;
+		}
 	}
 }

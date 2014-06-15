@@ -5,7 +5,6 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -13,7 +12,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JRootPane;
 import javax.swing.UIManager;
-import javax.swing.event.MouseInputListener;
 import com.tankwar.domain.DBProxyImpl;
 import com.tankwar.domain.EnemyTankContainer;
 import com.tankwar.entity.Hero;
@@ -33,7 +31,7 @@ import com.tankwar.view.panel.RankingPanel;
  * date 2014-5-31
  *
  */
-public class MainFrame extends JFrame implements KeyListener, MouseListener, Runnable , MouseInputListener{
+public class MainFrame extends JFrame implements Runnable , KeyListener{
 
 	/**
 	 * 
@@ -118,9 +116,12 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
+		
 		addKeyListener(this);
-		addMouseListener(this);
-		addMouseMotionListener(this);
+		/*addMouseListener(this);
+		addMouseMotionListener(this);*/
+		
+		
 		this.setIconImage(imageIcon);
 	}
 	
@@ -315,12 +316,12 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 		
 		if( token.equals("sceneCreate")){
 			if( this.scenePanel == null )
-				this.scenePanel = new SceneCreatPanel();
+				this.scenePanel = new SceneCreatPanel(this);
 			getContentPane().add(scenePanel);//切换成游戏场景面板
 			Game.switchPanelStatus("sceneCreate");//切换游戏面板状态
 		}else if( token.equals("sceneChose")){
 			if( this.sceneChosePanel == null )
-				this.sceneChosePanel = new StageChosePanel();
+				this.sceneChosePanel = new StageChosePanel(this);
 			getContentPane().add(sceneChosePanel);//切换到游戏场景选择面板
 			Game.switchPanelStatus("sceneChose");//切换游戏面板状态
 		}
@@ -398,7 +399,17 @@ public class MainFrame extends JFrame implements KeyListener, MouseListener, Run
 	}
 
 	public void mouseEntered(MouseEvent e) {
-		
+		/*//鼠标进入返回按钮区域
+		if( e.getX() >= 5 && e.getX() <= 45 && e.getY() >= 5 && e.getY() <= 45){
+			
+			if( Game.PANEL_STATUS == Game.PANEL_STATUS_SCENE_BUILD && this.scenePanel != null){
+				this.scenePanel.setReturnBtnFlag(true);
+			}
+		}else{
+			if( Game.PANEL_STATUS == Game.PANEL_STATUS_SCENE_BUILD && this.scenePanel != null){
+				this.scenePanel.setReturnBtnFlag(f);
+			}
+		}*/
 	}
 
 	public void mouseExited(MouseEvent e) {

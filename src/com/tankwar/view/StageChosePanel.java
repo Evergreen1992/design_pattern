@@ -4,10 +4,14 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.event.MouseInputListener;
+
 import com.tankwar.utils.FileUtils;
 import com.tankwar.utils.SceneReaderFactory;
 
@@ -16,7 +20,7 @@ import com.tankwar.utils.SceneReaderFactory;
  * @author Administrator
  *
  */
-public class StageChosePanel extends JPanel{
+public class StageChosePanel extends JPanel implements MouseInputListener{
 
 	/**
 	 * 
@@ -29,6 +33,12 @@ public class StageChosePanel extends JPanel{
 	
 	private Image bgBlue = null ;
 	
+	private Image returnBtn1 , returnBtn2 = null ;
+	
+	private boolean returnBtnFlag = false ; //鼠标是否进入
+	
+	MainFrame mainFrame = null ;
+	
 	//颜色值
 	private Color[] colorList = new Color[]{
 			new Color(165,197,0),new Color(0,139,0),
@@ -37,7 +47,9 @@ public class StageChosePanel extends JPanel{
 			new Color(27,162,227),new Color(100,118,136)
 	};
 	
-	public StageChosePanel(){
+	public StageChosePanel(MainFrame mf){
+		this.mainFrame = mf ;
+		
 		array = SceneReaderFactory.readMap(currentStage);
 		try {
 			grass = ImageIO.read(new File("source/images/grass.png"));
@@ -45,9 +57,15 @@ public class StageChosePanel extends JPanel{
 			wallUndefeted = ImageIO.read(new File("source/images/wall2.png"));
 			water = ImageIO.read(new File("source/images/water.png"));
 			bgBlue = ImageIO.read(new File("source/images/background/green.png"));
+			
+			returnBtn1 = ImageIO.read(new File("source/images/system/buttons/return_1.png"));
+			returnBtn2 = ImageIO.read(new File("source/images/system/buttons/return_2.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		this.addMouseMotionListener(this);
+		this.addMouseListener(this);
 	}
 	
 	public void paint(Graphics g){
@@ -98,7 +116,13 @@ public class StageChosePanel extends JPanel{
 	 * 绘制按钮
 	 */
 	public void drawButtons(Graphics g){
-		
+		//返回按钮
+		if( returnBtnFlag == true ){
+			g.drawImage(returnBtn2, 5, 5, 40, 40, this);
+			}
+		else{
+			g.drawImage(returnBtn1, 5, 5, 40, 40, this);
+		}
 	}
 	
 	/**
@@ -171,5 +195,40 @@ public class StageChosePanel extends JPanel{
 		}
 		
 		array = SceneReaderFactory.readMap(currentStage);
+	}
+	 
+	public void mouseClicked(MouseEvent e) {
+		if( e.getX() >= 5 && e.getX() <= 45 && e.getY() >= 5 && e.getY() <= 45){
+			this.mainFrame.backToMenu();
+		}
+	}
+	 
+	public void mousePressed(MouseEvent e) {
+		 
+	}
+	 
+	public void mouseReleased(MouseEvent e) {
+		 
+	}
+
+	public void mouseEntered(MouseEvent e) {
+		
+	}
+
+	public void mouseExited(MouseEvent e) {
+		
+	}
+
+	public void mouseDragged(MouseEvent e) {
+		 
+	}
+
+	public void mouseMoved(MouseEvent e) {
+		
+		if( e.getX() >= 5 && e.getX() <= 45 && e.getY() >= 5 && e.getY() <= 45){
+			this.returnBtnFlag = true ;
+		}else{
+			this.returnBtnFlag = false ;
+		}
 	}
 }
