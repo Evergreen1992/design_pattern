@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputListener;
 
@@ -18,9 +19,11 @@ import com.tankwar.entity.Bullet;
 import com.tankwar.entity.Enemy;
 import com.tankwar.entity.Prop;
 import com.tankwar.entity.Tank;
+import com.tankwar.entity.interfaces.PropStatus;
 import com.tankwar.entity.interfaces.PropType;
 import com.tankwar.utils.Colors;
 import com.tankwar.utils.Constant;
+import com.tankwar.utils.DBHandler;
 import com.tankwar.utils.Game;
 
 /**
@@ -43,6 +46,9 @@ public class MainPanel extends JPanel implements MouseListener, MouseInputListen
 	//返回按钮
 	private Image returnBtn1 = null , returnBtn2 = null ;
 	private boolean returnBtnFlag = false ; //返回按钮状态
+	//存档按钮
+	private Image recordBtn1 = null , recordBtn2;//存档按钮图片
+	private boolean saveBtnFlag = false ;
 	
 	//一些颜色定义
 	public Color briterGreen = new Color(111, 143, 47);
@@ -92,6 +98,10 @@ public class MainPanel extends JPanel implements MouseListener, MouseInputListen
 			
 			returnBtn1 = ImageIO.read(new File("source/images/system/buttons/return_1.png"));
 			returnBtn2 = ImageIO.read(new File("source/images/system/buttons/return_2.png"));
+			
+			//recordBtn1
+			recordBtn1 = ImageIO.read(new File("source/images/system/buttons/save_1.png"));
+			recordBtn2 = ImageIO.read(new File("source/images/system/buttons/save_2.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -158,13 +168,14 @@ public class MainPanel extends JPanel implements MouseListener, MouseInputListen
 			drawGameOption(g);
 			drawProps(g);
 		}else if( Game.status == Game.STATUS_GAME_OVER){
+			g.setColor(Color.black);
+			g.fillRect(0, 0, this.mainFrame.width, this.mainFrame.height);
+			g.setColor(purple);
+			g.fillRect(800, 0, 100, 600);
+			
 			drawMap(g);
-			//文字显示
-			g.setColor(Color.green);
-			g.fillRect(370, 250, 200, 100);
-			g.setColor(Color.blue);
-			g.setFont(this.defaultFontBig);
-			g.drawString("Game Over", 420, 300);
+			drawTank(g);
+			drawGameOption(g);
 		}
 	
 	}
@@ -177,20 +188,21 @@ public class MainPanel extends JPanel implements MouseListener, MouseInputListen
 		
 		if( number % 4 == 0 ){
 			for(Prop p : PropsContainer.getValidProps()){
-				switch( p.getType()){
-				case PropType.mime :
-					g.drawImage(this.prop_mime, p.getX(), p.getY(), Constant.PROP_WIDTH_HEIGHT, Constant.PROP_WIDTH_HEIGHT, this);
-					break ;
-				case PropType.hat :
-					g.drawImage(this.prop_hat, p.getX(), p.getY(), Constant.PROP_WIDTH_HEIGHT, Constant.PROP_WIDTH_HEIGHT, this);
-					break ;
-				case PropType.life :
-					g.drawImage(this.prop_life, p.getX(), p.getY(), Constant.PROP_WIDTH_HEIGHT, Constant.PROP_WIDTH_HEIGHT, this);
-					break ;
-				case PropType.star :
-					g.drawImage(this.prop_star, p.getX(), p.getY(), Constant.PROP_WIDTH_HEIGHT, Constant.PROP_WIDTH_HEIGHT, this);
-					break ;
-				}
+				if( p.getStatus() == PropStatus.ALIVE)
+					switch( p.getType()){
+					case PropType.mime :
+						g.drawImage(this.prop_mime, p.getX(), p.getY(), Constant.PROP_WIDTH_HEIGHT, Constant.PROP_WIDTH_HEIGHT, this);
+						break ;
+					case PropType.hat :
+						g.drawImage(this.prop_hat, p.getX(), p.getY(), Constant.PROP_WIDTH_HEIGHT, Constant.PROP_WIDTH_HEIGHT, this);
+						break ;
+					case PropType.life :
+						g.drawImage(this.prop_life, p.getX(), p.getY(), Constant.PROP_WIDTH_HEIGHT, Constant.PROP_WIDTH_HEIGHT, this);
+						break ;
+					case PropType.star :
+						g.drawImage(this.prop_star, p.getX(), p.getY(), Constant.PROP_WIDTH_HEIGHT, Constant.PROP_WIDTH_HEIGHT, this);
+						break ;
+					}
 			}
 		}
 	}
@@ -214,6 +226,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseInputListen
 		}
 		
 		g.drawString("第" + Game.stage + "关", 822, 31);
+		g.drawString("得分:" + (Game.enemy_killed * 100 + Game.propScore) , 822, 51);
 		
 		//返回按钮
 		if( returnBtnFlag == true ){
@@ -221,6 +234,12 @@ public class MainPanel extends JPanel implements MouseListener, MouseInputListen
 		}
 		else{
 			g.drawImage(returnBtn1, 850, 300, 40, 40, this);
+		}
+		//存档按钮
+		if( saveBtnFlag == true ){
+			g.drawImage(recordBtn2, 850, 350, 40, 40, this);
+		}else{
+			g.drawImage(recordBtn1, 850, 350, 40, 40, this);
 		}
 	}
 	
@@ -356,6 +375,12 @@ public class MainPanel extends JPanel implements MouseListener, MouseInputListen
 		if( e.getX() >= 850 && e.getX() <= 890 && e.getY() >= 300 && e.getY() <= 340){
 			this.mainFrame.backToMenu();
 		}
+		
+		//点击存档按钮
+		if( e.getX() >= 850 && e.getX() <= 890 && e.getY() >= 350 && e.getY() <= 390){
+			String name = JOptionPane.showInputDialog("请输入存档名称:", "新的存档");
+			new DBHandler().saveRecord(name);
+		}
 	}
 	
 	public void mousePressed(MouseEvent e) {
@@ -383,6 +408,12 @@ public class MainPanel extends JPanel implements MouseListener, MouseInputListen
 			this.returnBtnFlag = true ;
 		}else{
 			this.returnBtnFlag = false ;
+		}
+		
+		if( e.getX() >= 850 && e.getX() <= 890 && e.getY() >= 350 && e.getY() <= 390){
+			this.saveBtnFlag = true ;
+		}else{
+			this.saveBtnFlag = false ;
 		}
 	}
 }

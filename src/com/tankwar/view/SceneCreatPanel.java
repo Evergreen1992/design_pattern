@@ -121,15 +121,15 @@ public class SceneCreatPanel extends JPanel implements MouseInputListener{
 		
 		//右边图形方块选中状态
 		if( this.blockType == 0 ){
-			g.drawRect(500, 555, 40, 40);
+			g.drawRect(500, 555, 40, 20);
 		}else if( this.blockType == 1){
-			g.drawRect(550, 555, 40, 40);
+			g.drawRect(550, 555, 40, 20);
 		}else if( this.blockType == 2){
-			g.drawRect(600, 555, 40, 40);
+			g.drawRect(600, 555, 40, 20);
 		}else if( this.blockType == 3){
-			g.drawRect(650, 555, 40, 40);
+			g.drawRect(650, 555, 40, 20);
 		}else if( this.blockType == 4){
-			g.drawRect(700, 555, 40, 40);
+			g.drawRect(700, 555, 40, 20);
 		}
 		
 		
@@ -143,10 +143,17 @@ public class SceneCreatPanel extends JPanel implements MouseInputListener{
 	}
 	
 	public void drawMap(Graphics g){
-		g.setColor(Color.gray);
-		for( int i = 0; i<Constant.MAP_Array_SIZE; i++){
-			for( int j = 0; j <80; j++){
-				g.drawRect(j * 10 + 50, i * 10 + 50, 10, 10);
+		
+		
+		if( this.model != 1){
+			g.setColor(Color.black);
+			g.fillRect(50, 50, 800, 500);
+		}else{
+			g.setColor(Color.gray);
+			for( int i = 0; i<Constant.MAP_Array_SIZE; i++){
+				for( int j = 0; j <80; j++){
+					g.drawRect(j * 10 + 50, i * 10 + 50, 10, 10);
+				}
 			}
 		}
 		

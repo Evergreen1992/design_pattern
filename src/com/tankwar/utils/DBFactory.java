@@ -12,7 +12,7 @@ import java.sql.SQLException;
  */
 public class DBFactory {
 
-	public static void close(ResultSet rs){
+	public void close(ResultSet rs){
 		if( rs != null)
 			try {
 				rs.close();
@@ -21,7 +21,7 @@ public class DBFactory {
 			}
 	}
 	
-	public static void close(PreparedStatement pstmt){
+	public void close(PreparedStatement pstmt){
 		if( pstmt != null)
 			try {
 				pstmt.close();
@@ -30,7 +30,7 @@ public class DBFactory {
 			}
 	}
 	
-	public static void close(Connection conn){
+	public void close(Connection conn){
 		if( conn != null)
 			try {
 				conn.close();
@@ -43,17 +43,17 @@ public class DBFactory {
 	 * execute some sql update, delete, insert
 	 * @param sql
 	 */
-	public static void executeSql(String sql){
+	public void executeSql(String sql){
 		System.out.println("执行:" + sql);
 		Connection conn = ConnectionUtil.getInstance();
 		PreparedStatement pstmt = null ;
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.executeUpdate();
+			pstmt.execute();
 			
 		} catch (SQLException e) {
-			System.out.println("error get best score...");
+			e.printStackTrace();
 		}finally{
 			close(pstmt);
 		}

@@ -7,6 +7,7 @@ import com.tankwar.domain.PropsContainer;
 import com.tankwar.entity.interfaces.PropStatus;
 import com.tankwar.entity.interfaces.PropType;
 import com.tankwar.utils.Constant;
+import com.tankwar.utils.Game;
 import com.tankwar.utils.SoundPlayFactory;
 import com.tankwar.view.MainFrame;
 
@@ -158,6 +159,21 @@ public class Tank {
 				
 				
 			}
+		}
+	}
+	
+	/**
+	 * 道具得分
+	 */
+	public void propScoreAdd(int type){
+		if( type == PropType.star){
+			Game.propScore += 150 ;
+		}else if( type == PropType.life){
+			Game.propScore += 500 ;
+		}else if( type == PropType.hat){
+			Game.propScore += 200 ;
+		}else if( type == PropType.mime){
+			Game.propScore += 100 ;
 		}
 	}
 	

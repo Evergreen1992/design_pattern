@@ -130,10 +130,10 @@ public class StageChosePanel extends JPanel implements MouseInputListener{
 	 * @param g
 	 */
 	public void drawScene(Graphics g){
-		int startPosition = 100 + (this.stageNum - 1) * 40 ;
+		int startPosition = (this.stageNum - 1) * 40 ;
 		//50 + i * 40 , 50 + i * 40
 		g.setColor(Color.black);
-		g.fillRect(50 + (this.stageNum - 1) * 40, 50 + (this.stageNum - 1) * 40, 450, 300);
+		g.fillRect((this.stageNum - 1) * 40 - 70, (this.stageNum - 1) * 40, 500, 300);
 		
 		for( int i = 0; i<array.length; i++){
 			for( int j = 0; j<array[i].length(); j++){

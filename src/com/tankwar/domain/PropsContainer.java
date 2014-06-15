@@ -2,6 +2,7 @@ package com.tankwar.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.tankwar.entity.Prop;
 import com.tankwar.entity.interfaces.PropStatus;
 import com.tankwar.utils.Constant;
@@ -15,6 +16,12 @@ import com.tankwar.utils.Constant;
 public class PropsContainer {
 	
 	static List<Prop> props = new ArrayList<Prop>();
+	
+	public static void clearProps(){
+		for(Prop p : props){
+			p.setStatus(PropStatus.DEAD);
+		}
+	}
 	
 	//添加道具
 	public static void newProp(){

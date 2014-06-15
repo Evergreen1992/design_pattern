@@ -7,22 +7,27 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JRootPane;
 import javax.swing.UIManager;
+
 import com.tankwar.domain.DBProxyImpl;
 import com.tankwar.domain.EnemyTankContainer;
+import com.tankwar.domain.PropsContainer;
 import com.tankwar.entity.Hero;
 import com.tankwar.entity.Tank;
 import com.tankwar.utils.Constant;
+import com.tankwar.utils.DBHandler;
 import com.tankwar.utils.FileUtils;
 import com.tankwar.utils.Game;
 import com.tankwar.utils.SceneReaderFactory;
 import com.tankwar.utils.SoundPlayFactory;
-import com.tankwar.view.dialog.Dialog;
+import com.tankwar.view.dialog.ExitDialog;
 import com.tankwar.view.dialog.InputDialog;
+import com.tankwar.view.dialog.RecordChoseDialog;
 import com.tankwar.view.panel.RankingPanel;
 
 /**
@@ -48,6 +53,8 @@ public class MainFrame extends JFrame implements Runnable , KeyListener{
 	public StageChosePanel sceneChosePanel = null ;//游戏场景选择面板
 	public StageResultPanel stageResultPanel = null ;// 游戏关卡结果面板
 	public RankingPanel rankingPanel = null ; //游戏排行榜面板
+	public RecordChoseDialog rcd = null ;//
+	
 	public Hero hero = null ;//hero
 	public EnemyTankContainer enemyTankContainer ; 
 	public String[] mapArray = null ;//the map of the background
@@ -129,6 +136,14 @@ public class MainFrame extends JFrame implements Runnable , KeyListener{
 		
 	}
 	
+	/**
+	 * 保存游戏得分
+	 */
+	public void saveScore(String username){
+		new DBHandler().saveRanking(username);
+		System.out.println("游戏得分已经保存!");
+	}
+	
 	public void nextStage(){
 		Game.nextStage();
 		this.mapArray = SceneReaderFactory.readMap(Game.stage);
@@ -138,6 +153,7 @@ public class MainFrame extends JFrame implements Runnable , KeyListener{
 		this.hero.setMapArray(mapArray);
 		hero.setLocation_x(400);
 		hero.setLocation_y(400);
+		PropsContainer.clearProps();//清除道具
 	}
 	
 	/**
@@ -163,6 +179,7 @@ public class MainFrame extends JFrame implements Runnable , KeyListener{
 		}
 		
 		Game.status = Game.STATUS_MENU ;
+		Game.PANEL_STATUS = Game.PANEL_STATUS_MAINPANEL ;
 	}
 	
 	/**
@@ -170,16 +187,26 @@ public class MainFrame extends JFrame implements Runnable , KeyListener{
 	 */
 	public void gameStart(){
 		initTank();
+		hero.setHeroLifeValue(3);
+		Game.isBossAlive = true ;
 		mainPanel.sArray = mapArray;//set map data
+		Game.status = Game.STATUS_ON ;
 		Game.start();
 	}
 	
 	/**
 	 * 游戏恢复（恢复上一次游戏）
 	 */
-	public void gameResume(){
-		resumeTank(); 
-		mainPanel.sArray = mapArray;//set map data
+	public void gameResume(String[] data){
+		
+		Game.stage = Integer.parseInt(data[1]);
+		Game.enemy_killed = Integer.parseInt(data[2]) / 100 ;
+		
+		initTank();
+		hero.setHeroLifeValue(3);
+		Game.isBossAlive = true ;
+		mainPanel.sArray = SceneReaderFactory.readMap(Game.stage);
+		Game.status = Game.STATUS_ON ;
 		Game.start();
 	}
 	
@@ -196,18 +223,6 @@ public class MainFrame extends JFrame implements Runnable , KeyListener{
 	 * key event
 	p */
 	public void keyPressed(KeyEvent event) {
-		if( event.getKeyCode() == KeyEvent.VK_L){
-			switchPanel("sceneCreate");
-		}else if( event.getKeyCode() == KeyEvent.VK_K){
-			switchPanel("sceneChose");
-		}else if( event.getKeyCode() == KeyEvent.VK_J){
-			switchPanel("mainPanel");
-		}else if( event.getKeyCode() == KeyEvent.VK_H){
-			switchPanel("stageResult");
-		}else if( event.getKeyCode() == KeyEvent.VK_G){
-			switchPanel("rankingPanel");
-		}
-		
 		//游戏主面板事件处理
 		if( Game.PANEL_STATUS == Game.PANEL_STATUS_MAINPANEL ){
 			
@@ -228,7 +243,7 @@ public class MainFrame extends JFrame implements Runnable , KeyListener{
 					hero.fire();
 				}else if( event.getKeyCode() == KeyEvent.VK_ESCAPE){
 					//JOptionPane.showConfirmDialog(this, "游戏未结束，确定要存档并退出?");
-					new Dialog(this, "游戏未结束，确定要存档并退出?");
+					new ExitDialog(this, "游戏未结束，确定要存档并退出?");
 				}else if( event.getKeyCode() == KeyEvent.VK_UP){
 					mainPanel.setGameOption(0);
 				}else if(event.getKeyCode() == KeyEvent.VK_DOWN){
@@ -259,8 +274,13 @@ public class MainFrame extends JFrame implements Runnable , KeyListener{
 						//开始游戏
 						gameStart();
 					}else if( this.mainPanel.currentOption == 1){
-						//JOptionPane.showInputDialog("fff");
-						new InputDialog();
+						if( rcd == null ){
+							rcd = new RecordChoseDialog(this, "选择一个存档，开始游戏");
+						}
+						else
+						{
+							rcd.setVisible(true);
+						}
 					}else if( this.mainPanel.currentOption == 2){
 						switchPanel("sceneCreate");
 					}else if( this.mainPanel.currentOption == 3){
@@ -268,7 +288,7 @@ public class MainFrame extends JFrame implements Runnable , KeyListener{
 					}else if( this.mainPanel.currentOption == 4){
 						switchPanel("sceneChose");
 					}else if( this.mainPanel.currentOption == 5){
-						new Dialog(this, "确定要退出游戏吗?");
+						new ExitDialog(this, "确定要退出游戏吗?");
 					}
 				}
 			}
@@ -477,20 +497,27 @@ public class MainFrame extends JFrame implements Runnable , KeyListener{
 			if( this.enemyTankContainer != null ){
 				if( totleSleepTime % 10 == 0 )//每一秒判断一次
 				{
-					if( this.enemyTankContainer.getAliveNum() < 3 && this.enemyTankContainer.getEnemyList().size() < Constant.defaultEnemiesNum){
-						if( totleSleepTime % 20 == 0)
-							this.enemyTankContainer.initEnemies(1);
-					}else if( this.enemyTankContainer.getTotleKilledThisStage() == Constant.defaultEnemiesNum){
-						//关卡提示
-						int option = JOptionPane.showConfirmDialog(this, "是否开始下一关卡游戏?");
-						
-						if( option == 0 ){
-							this.nextStage();
+					//游戏还未结束
+					if( Game.isBossAlive && this.hero.getHeroLifeValue() >= 1){
+					
+						if( this.enemyTankContainer.getAliveNum() < 3 && this.enemyTankContainer.getEnemyList().size() < Constant.defaultEnemiesNum){
+							if( totleSleepTime % 20 == 0)
+								this.enemyTankContainer.initEnemies(1);
+						}else if( this.enemyTankContainer.getTotleKilledThisStage() == Constant.defaultEnemiesNum){
+							//关卡提示
+							int option = JOptionPane.showConfirmDialog(this, "是否开始下一关卡游戏?");
+							
+							if( option == 0 ){
+								this.nextStage();
+							}
+							else if( option == 1){
+								this.backToMenu();
+							}
+							//new Dialog(this, "是否开始下一关卡游戏?");
 						}
-						else if( option == 1){
-							this.backToMenu();
-						}
-						//new Dialog(this, "是否开始下一关卡游戏?");
+					}else{//游戏结束
+						Game.status = Game.STATUS_GAME_OVER ;
+						new InputDialog(this, "游戏结束，请输入你的大名");
 					}
 				}
 			}

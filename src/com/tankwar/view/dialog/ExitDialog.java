@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import com.tankwar.view.MainFrame;
 
-public class Dialog extends JDialog implements ActionListener{
+public class ExitDialog extends JDialog implements ActionListener{
 
 	/**
 	 * 
@@ -21,7 +21,7 @@ public class Dialog extends JDialog implements ActionListener{
 	JPanel panel = null ;
 	JLabel info = null ;
 
-	public Dialog(MainFrame frame, String str){
+	public ExitDialog(MainFrame frame, String str){
 		
 		super(frame, "", true);
 		
@@ -61,8 +61,10 @@ public class Dialog extends JDialog implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if( e.getSource() == this.ok){
 			System.out.println("ok");
+			System.exit(0);
 		}else if( e.getSource() == this.cancel){
 			System.out.println("cancel");
+			this.setVisible(false);
 		}
 	}
 }

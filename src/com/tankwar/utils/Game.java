@@ -10,6 +10,7 @@ public class Game {
 	public static int stage = 1 ; 
 	public static int status = 0 ;
 	public static int enemy_killed = 0 ;
+	public static int propScore = 0 ; //迟到的道具分数
 	
 	public static final int STATUS_MENU = 0; //在菜单页面
 	public static final int STATUS_ON = 1; //游戏进行中
@@ -26,6 +27,9 @@ public class Game {
 
 	//游戏场景状态
 	public static int PANEL_STATUS = 0 ;//
+	
+	
+	public static boolean isBossAlive = true ; 
 	
 	public static void switchPanelStatus(String name){
 		

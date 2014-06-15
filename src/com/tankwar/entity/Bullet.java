@@ -2,7 +2,6 @@ package com.tankwar.entity;
 
 import com.tankwar.domain.PropsContainer;
 import com.tankwar.utils.Constant;
-import com.tankwar.utils.DBHandler;
 import com.tankwar.utils.Game;
 import com.tankwar.view.MainFrame;
 
@@ -109,7 +108,6 @@ public class Bullet extends Thread{
 							if( hero.getHeroLifeValue() == 0 ){
 								hero.setStatus(Tank.SHOTED);
 								Game.status = Game.STATUS_GAME_OVER;//游戏结束
-								DBHandler.updateBestScore(Game.enemy_killed * Constant.singleScore);
 								this.mainFrame.enemyTankContainer.gameOver();
 							}
 							this.setStatus(DEAD);
@@ -122,7 +120,6 @@ public class Bullet extends Thread{
 							if( hero.getHeroLifeValue() == 0 ){
 								hero.setStatus(Tank.SHOTED);
 								Game.status = Game.STATUS_GAME_OVER;//游戏结束
-								DBHandler.updateBestScore(Game.enemy_killed * Constant.singleScore);
 								this.mainFrame.enemyTankContainer.gameOver();
 							}
 							this.setStatus(DEAD);
@@ -152,10 +149,10 @@ public class Bullet extends Thread{
 								
 							}
 						}
-						if( Game.enemy_killed == Constant.defaultEnemiesNum){
+						/*if( Game.enemy_killed == Constant.defaultEnemiesNum){
 							Game.enemy_killed = 0 ;
 							//this.mainFrame.nextStage();
-						}
+						}*/
 					}
 				}
 			}
@@ -165,6 +162,7 @@ public class Bullet extends Thread{
 				if( this.location_x >= Game.BOSS_TANK_Y * Constant.WIDTH_HEIGHT && this.location_x <= (Game.BOSS_TANK_Y + 3) * Constant.WIDTH_HEIGHT &&
 						this.location_y >= Game.BOSS_TANK_X * Constant.WIDTH_HEIGHT && this.location_y <= (Game.BOSS_TANK_X + 3) * Constant.WIDTH_HEIGHT){
 					System.out.println("boss挂了！************** Game over!");
+					Game.isBossAlive = false ;
 					this.setStatus(DEAD);
 				}
 			}
