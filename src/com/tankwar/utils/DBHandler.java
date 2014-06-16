@@ -10,7 +10,7 @@ import com.tankwar.entity.Tank;
 
 /**
  * database methods.数据库操作类
- * @author Evergreen
+ * @author admin
  */
 public class DBHandler extends DBFactory{
 	

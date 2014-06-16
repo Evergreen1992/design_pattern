@@ -7,7 +7,7 @@ import com.tankwar.view.MainFrame;
 
 /**
  * the bullet
- * @author Evergreen
+ * @author admin
  *
  */
 public class Bullet extends Thread{

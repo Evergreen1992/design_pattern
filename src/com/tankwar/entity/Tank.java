@@ -14,7 +14,7 @@ import com.tankwar.view.MainFrame;
 
 /**
  *tanks' super class
- * @author Evergreen
+ * @author admin
  *
  */
 public class Tank {

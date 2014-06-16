@@ -7,7 +7,7 @@ import com.tankwar.entity.Hero;
 
 /**
  * 数据库代理对象接口
- * @author Evergreen
+ * @author admin
  *
  */
 public interface DBProxy {

@@ -10,7 +10,7 @@ import com.tankwar.view.MainFrame;
 
 /**
  *  enemy 坦克容器池(池里面初始化一定的坦克对象，可以被使用，被回收。)
- *  @author Evergreen
+ *  @author admin
  *
  */
 public class EnemyTankContainer {

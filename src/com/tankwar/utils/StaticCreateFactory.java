@@ -4,7 +4,7 @@ import com.tankwar.entity.Enemy;
 
 /**
  * 简单工程模式
- * @author Evergreen
+ * @author admin
  *
  */
 public class StaticCreateFactory {

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 /**
  *工厂模式
- * @author Evergreen
+ * @author admin
  *
  */
 public class DBFactory {

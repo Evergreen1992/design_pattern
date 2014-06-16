@@ -12,7 +12,7 @@ import com.tankwar.utils.Colors;
 
 /**
  * 提示信息框
- * @author Evergreen
+ * @author admin
  *
  */
 public class MsgDialog extends JDialog implements KeyListener{

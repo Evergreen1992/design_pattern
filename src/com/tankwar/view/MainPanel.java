@@ -28,7 +28,7 @@ import com.tankwar.utils.Game;
 
 /**
  * 
- * @author Evergreen
+ * @author admin
  *
  */
 public class MainPanel extends JPanel implements MouseListener, MouseInputListener{
@@ -121,9 +121,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseInputListen
 	}
 	
 	public void paint(Graphics g){
-		number ++ ;
-		if( number == 100)
-			number = 0 ;
+		
 		
 		//status
 		if(Game.status == Game.STATUS_MENU){ //主菜单绘制
@@ -244,7 +242,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseInputListen
 	}
 	
 	public void drawBossTank(Graphics g){
-		g.setColor(Color.green);
+		
 		g.drawImage(boss, Game.BOSS_TANK_Y * 10, Game.BOSS_TANK_X * 10, 30, 30, this);
 	}
 
@@ -404,12 +402,14 @@ public class MainPanel extends JPanel implements MouseListener, MouseInputListen
 	}
 	
 	public void mouseMoved(MouseEvent e) {
+		//鼠标移动到了返回按钮处
 		if( e.getX() >= 850 && e.getX() <= 890 && e.getY() >= 300 && e.getY() <= 340){
 			this.returnBtnFlag = true ;
 		}else{
 			this.returnBtnFlag = false ;
 		}
 		
+		//鼠标移动到了存档按钮处
 		if( e.getX() >= 850 && e.getX() <= 890 && e.getY() >= 350 && e.getY() <= 390){
 			this.saveBtnFlag = true ;
 		}else{

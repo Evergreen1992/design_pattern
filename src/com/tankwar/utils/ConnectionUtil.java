@@ -5,7 +5,7 @@ import java.sql.*;
 
 //singleton(单例模式)
 /**
- * @author Evergreen
+ * @author admin
  *
  */
 public class ConnectionUtil {

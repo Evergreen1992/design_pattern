@@ -2,7 +2,7 @@ package com.tankwar.utils;
 
 /**
  * game data (such as : stage, status ...)
- * @author Evergreen
+ * @author admin
  *
  */
 public class Game {

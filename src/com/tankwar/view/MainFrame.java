@@ -32,7 +32,7 @@ import com.tankwar.view.panel.RankingPanel;
 
 /**
  * main frame interface
- * @author Evergreen
+ * @author admin
  * date 2014-5-31
  *
  */

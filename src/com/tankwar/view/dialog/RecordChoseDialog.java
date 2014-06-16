@@ -127,7 +127,7 @@ public class RecordChoseDialog extends JDialog implements ActionListener{
 				this.mf.gameResume(this.rowData[selected]);
 			}
 		}else if( e.getSource() == refresh){
-			refreshData();
+			//refreshData();
 		}
 	}
 }

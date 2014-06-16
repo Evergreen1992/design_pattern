@@ -3,7 +3,7 @@ package com.tankwar.utils;
 
 /**
  * some useful constant value
- * @author Evergreen
+ * @author admin
  *
  */
 public class Constant {

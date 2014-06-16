@@ -4,7 +4,7 @@ import java.awt.Color;
 
 /**
  * 一些颜色值
- * @author Evergreen
+ * @author admin
  *
  */
 public class Colors {
